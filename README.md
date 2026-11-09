@@ -12,16 +12,6 @@
 4. 首次使用时，按下方步骤运行 `Enable-Cep.ps1`。已为相应版本启用 CEP 调试模式时，可跳过。
 5. 打开 After Effects，从 **窗口 → 扩展 → 字体预览器 · Font Browser** 打开面板。
 
-## 首次启用 CEP 调试模式
-
-在解压目录打开 PowerShell，执行下面这一行。脚本无需管理员权限，可以重复运行。
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\Enable-Cep.ps1"
-```
-
-执行策略参数只作用于这次启动的 PowerShell 进程。脚本将当前用户 `HKCU\Software\Adobe\CSXS.11` 和 `CSXS.12` 下的 `PlayerDebugMode` 字符串设为 `1`，允许对应 CEP 运行时加载未签名扩展。这是同一 CEP 版本的共享设置，脚本只配置注册表，面板文件仍由你手动复制。只想启用其中一个版本时，在命令末尾加 `-CepVersion 11` 或 `-CepVersion 12`。
-
 ## 使用
 
 - **预览**。字体家族默认折叠。名称前有小圆点表示有多个样式，点名称展开或收起。顶部可输入预览文字，或选中文字图层后点“读取文字”。字体会按当前文字排序，能显示全部字符的家族排在上方，缺字的排在后面。点 × 可清空并恢复原顺序，留空时用 `Aa 123` 预览。

@@ -2,24 +2,25 @@
 
 [下载字体预览器.zip](./%E5%AD%97%E4%BD%93%E9%A2%84%E8%A7%88%E5%99%A8.zip?raw=true)
 
-适用于 Windows 版 After Effects 2023（23.x）。先解压完整 ZIP，再通过文件资源管理器手动安装到系统 CEP 目录。
+这是 Windows 版 After Effects 的 CEP 面板。扩展清单允许 AE 22.x 至 26.x 加载，要求 CEP 11 或 12。跨版本实际加载尚未逐一验证。先解压完整 ZIP，再手动安装到系统 CEP 目录。
 
 ## 手动安装或更新
 
-1. 保存工程并关闭 AE 2023。
+1. 保存工程并关闭 After Effects。
 2. 在交付目录中复制整个 **`cn.local.aefontbrowser`** 文件夹。它里面直接包含 `CSXS`、`index.html` 和 `host.jsx` 等面板文件。
 3. 在文件资源管理器的地址栏输入 `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions`，把刚才复制的文件夹粘贴进去。更新时将同名文件夹合并，选择替换同名文件。如果 Windows 提示需要管理员权限，点击“继续”。粘贴后，清单文件应位于 `C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\cn.local.aefontbrowser\CSXS\manifest.xml`。
-4. 首次在这台电脑安装时，按下方步骤启用 CEP 11 调试模式。如果已经启用，可直接继续。
-5. 打开 AE 2023，从 **窗口 → 扩展 → 字体预览器 · Font Browser** 打开面板。
+4. 首次使用时，按下方步骤运行 `Enable-Cep.ps1`。已为相应版本启用 CEP 调试模式时，可跳过。
+5. 打开 After Effects，从 **窗口 → 扩展 → 字体预览器 · Font Browser** 打开面板。
 
-## 首次启用 CEP 11 调试模式
+## 首次启用 CEP 调试模式
 
-这个面板是本地 CEP 扩展。AE 2023 需要启用当前 Windows 用户的 CEP 11 调试模式才能加载。
+在解压目录打开 PowerShell，执行下面这一行。脚本无需管理员权限，可以重复运行。
 
-1. 按 **Win + R**，输入 `regedit` 并回车。若 Windows 提示授权，确认后继续。
-2. 在注册表编辑器地址栏打开 `HKEY_CURRENT_USER\Software\Adobe\CSXS.11`。如果没有 `CSXS.11`，在 `HKEY_CURRENT_USER\Software\Adobe` 下新建这个项。
-3. 在右侧新建名为 `PlayerDebugMode` 的**字符串值（REG_SZ）**，双击将数值数据设为 `1`。已有这个值时，直接检查或修改其数据。
-4. 关闭注册表编辑器，打开 AE 2023。若 AE 当时开着，完全退出后再打开。
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\Enable-Cep.ps1"
+```
+
+执行策略参数只作用于这次启动的 PowerShell 进程。脚本将当前用户 `HKCU\Software\Adobe\CSXS.11` 和 `CSXS.12` 下的 `PlayerDebugMode` 字符串设为 `1`，允许对应 CEP 运行时加载未签名扩展。这是同一 CEP 版本的共享设置，脚本只配置注册表，面板文件仍由你手动复制。只想启用其中一个版本时，在命令末尾加 `-CepVersion 11` 或 `-CepVersion 12`。
 
 ## 使用
 
@@ -28,7 +29,7 @@
 - **换字体**。在时间轴选中文字图层，双击字体或展开后双击某个样式。键盘在家族行按 Enter 展开或收起，在样式行按 Enter 应用。开启“实时应用”后，单击具体样式即可换字体，开关状态会在下次打开时恢复。每次应用可用 Ctrl+Z 撤销。
 - **显示设置**。在底部调整预览字号和滚轮步幅，或在安装了新字体后点“刷新字体”。方向键和 Page Up / Page Down 可浏览列表。
 - **图层字体同步**。选中文字图层后，列表会高亮并定位到它当前使用的字体。展开家族后会高亮对应字重。若同时选中多个图层，面板跟随第一个文字图层。切换图层只会同步高亮。
-- **源文本限制**。应用前会跳过锁定、源文本已有关键帧或启用了表达式的图层。AE 2023 会按整个文字图层应用所选字体，原先混用的字体会统一为所选字体。
+- **源文本限制**。应用前会跳过锁定、源文本已有关键帧或启用了表达式的图层。换字体时作用于整个文字图层，原先混用的字体会统一为所选字体。
 
 面板扫描 Windows 系统和当前用户的 OpenType/TrueType 字体（TTF、OTF、TTC、OTC）。只在 Adobe 内激活的云字体可能不在列表中。字体缺少某个字符时，预览可能使用系统回退字形，最终效果以 AE 合成画面为准。
 

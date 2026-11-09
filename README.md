@@ -2,6 +2,8 @@
 
 [下载字体预览器.zip](./%E5%AD%97%E4%BD%93%E9%A2%84%E8%A7%88%E5%99%A8.zip?raw=true)
 
+![字体预览器面板](preview.png)
+
 这是 Windows 版 After Effects 的 CEP 面板。扩展清单允许 AE 22.x 至 26.x 加载，要求 CEP 11 或 12。跨版本实际加载尚未逐一验证。先解压完整 ZIP，再手动安装到系统 CEP 目录。
 
 ## 手动安装或更新
